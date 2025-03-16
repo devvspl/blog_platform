@@ -142,8 +142,8 @@ php artisan serve
 - **Request Body:**
 ```json
 {
-  "name": "John Doe",
-  "email": "john@example.com",
+  "name": "dev",
+  "email": "dev@example.com",
   "password": "password123",
   "password_confirmation": "password123"
 }
@@ -167,7 +167,7 @@ php artisan serve
 - **Request Body:**
 ```json
 {
-  "email": "john@example.com",
+  "email": "dev@example.com",
   "password": "password123"
 }
 ```
