@@ -1,4 +1,4 @@
-# Laravel 12 API with Sanctum Authentication & Caching
+# Laravel 12 Blog Platform API
 
 ## 📌 Project Setup Guide
 
