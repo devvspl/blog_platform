@@ -85,7 +85,7 @@ php artisan migrate
 
 ---
 
-## 🚀 Step 6: Seed Database (Optional)
+## 🚀 Step 6: Seed Database
 
 ```bash
 php artisan db:seed
