@@ -10,20 +10,19 @@
 - Composer
 - MySQL Database
 - Laravel 12 Installed
-- Redis (Optional for Cache)
 
 ---
 
 ## 🛑 Step 1: Clone the Project
 
 ```bash
-git clone https://github.com/your-repo/laravel-api.git
+git clone https://github.com/devvspl/blog_platform.git
 ```
 
 Navigate to the project folder:
 
 ```bash
-cd laravel-api
+cd blog_platform
 ```
 
 ---
@@ -50,9 +49,9 @@ Update the `.env` file with your database credentials:
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=laravel_api
+DB_DATABASE=blog_platform
 DB_USERNAME=root
-DB_PASSWORD=password
+DB_PASSWORD=root
 ```
 
 Set the cache driver to database:
@@ -124,20 +123,6 @@ Add Sanctum Middleware in `app/Http/Kernel.php`:
 
 ---
 
-## 🛑 Step 8: Install Laravel CORS
-
-```bash
-composer require barryvdh/laravel-cors
-```
-
-Publish CORS configuration:
-
-```bash
-php artisan vendor:publish --tag="cors"
-```
-
----
-
 ## ✅ Step 9: Run Laravel Server
 
 ```bash
@@ -146,33 +131,200 @@ php artisan serve
 
 ---
 
-## 🌐 API Endpoints
+## 🌐 API Endpoints Documentation
 
 ### 🔐 Authentication Endpoints
 
-| Method | Endpoint        | Description            |
-|--------|----------------|--------------------|
-| POST   | /api/register   | Register New User |
-| POST   | /api/login      | Login User            |
-| POST   | /api/logout     | Logout User           |
+#### 1️⃣ Register New User
+- **Method:** POST
+- **Endpoint:** `/api/register`
+- **Description:** Register a new user with name, email, and password.
+- **Request Body:**
+```json
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "password": "password123",
+  "password_confirmation": "password123"
+}
+```
+- **Response:**
+```json
+{
+  "status": true,
+  "message": "User registered successfully",
+  "data": {
+    "user": {},
+    "token": "<API_TOKEN>"
+  }
+}
+```
+
+#### 2️⃣ Login User
+- **Method:** POST
+- **Endpoint:** `/api/login`
+- **Description:** Authenticate user with email and password.
+- **Request Body:**
+```json
+{
+  "email": "john@example.com",
+  "password": "password123"
+}
+```
+- **Response:**
+```json
+{
+  "status": true,
+  "message": "Login successful",
+  "data": {
+    "user": {},
+    "token": "<API_TOKEN>"
+  }
+}
+```
+
+#### 3️⃣ Logout User
+- **Method:** POST
+- **Endpoint:** `/api/logout`
+- **Description:** Logout the authenticated user and revoke the token.
+- **Response:**
+```json
+{
+  "status": true,
+  "message": "Logout successful"
+}
+```
+
+---
 
 ### 📝 Post Endpoints
 
-| Method | Endpoint           | Description            |
-|--------|-----------------|--------------------|
-| GET    | /api/posts         | Fetch All Posts    |
-| POST   | /api/posts         | Create New Post   |
-| GET    | /api/posts/{slug} | Get Single Post   |
-| PUT    | /api/posts/{slug} | Update Post         |
-| DELETE | /api/posts/{slug} | Delete Post           |
+#### 4️⃣ Fetch All Posts
+- **Method:** GET
+- **Endpoint:** `/api/posts`
+- **Description:** Retrieve all posts with pagination.
+- **Response:**
+```json
+{
+  "status": true,
+  "message": "Posts fetched successfully",
+  "data": []
+}
+```
+
+#### 5️⃣ Create New Post
+- **Method:** POST
+- **Endpoint:** `/api/posts`
+- **Description:** Create a new post with title, content, category, and tags.
+- **Request Body:**
+```json
+{
+  "title": "My First Post",
+  "content": "This is the content of my first post",
+  "category_id": 1,
+  "tags": [1, 2, 3]
+}
+```
+- **Response:**
+```json
+{
+  "status": true,
+  "message": "Post created successfully",
+  "data": {}
+}
+```
+
+#### 6️⃣ Get Single Post
+- **Method:** GET
+- **Endpoint:** `/api/posts/{slug}`
+- **Description:** Fetch a specific post by slug.
+- **Response:**
+```json
+{
+  "status": true,
+  "message": "Post fetched successfully",
+  "data": {}
+}
+```
+
+#### 7️⃣ Update Post
+- **Method:** PUT
+- **Endpoint:** `/api/posts/{slug}`
+- **Description:** Update a post's title, content, category, and tags.
+- **Request Body:**
+```json
+{
+  "title": "Updated Post Title",
+  "content": "Updated content",
+  "category_id": 2,
+  "tags": [2, 4]
+}
+```
+- **Response:**
+```json
+{
+  "status": true,
+  "message": "Post updated successfully",
+  "data": {}
+}
+```
+
+#### 8️⃣ Delete Post
+- **Method:** DELETE
+- **Endpoint:** `/api/posts/{slug}`
+- **Description:** Delete a post by slug.
+- **Response:**
+```json
+{
+  "status": true,
+  "message": "Post deleted successfully"
+}
+```
+
+---
 
 ### 📂 Category Endpoints
 
-| Method | Endpoint           | Description             |
-|--------|----------------|--------------------|
-| GET    | /api/categories | Get All Categories |
+#### 9️⃣ Get All Categories
+- **Method:** GET
+- **Endpoint:** `/api/categories`
+- **Description:** Fetch all categories.
+- **Response:**
+```json
+{
+  "status": true,
+  "message": "Category list fetched successfully",
+  "data": []
+}
+```
 
 ---
+
+### 🔍 Search Endpoint
+
+#### 🔎 Search Posts
+- **Method:** GET
+- **Endpoint:** `/api/search`
+- **Description:** Search posts by keyword, category, or tag.
+- **Query Parameters:**
+```json
+{
+  "keyword": "My First Post",
+  "category": "technology",
+  "tag": "laravel"
+}
+```
+- **Response:**
+```json
+{
+  "status": true,
+  "message": "Posts filtered successfully",
+  "data": []
+}
+```
+🔗 **Refer Postman API Documentation:** [Click Here](https://documenter.getpostman.com/view/36783049/2sAYkBt26x)
+---
+
 
 ## 🛑 Caching Implementation
 
@@ -201,49 +353,4 @@ php artisan cache:clear
 ```
 
 ---
-
-## 🔥 API Testing (Postman or Insomnia)
-
-### Register New User
-
-```json
-{
-    "name": "John Doe",
-    "email": "john@example.com",
-    "password": "password",
-    "password_confirmation": "password"
-}
-```
-
-### Login User
-
-```json
-{
-    "email": "john@example.com",
-    "password": "password"
-}
-```
-
-Copy the token from response and use it in `Authorization: Bearer <token>` header for protected routes.
-
----
-
-## 🛑 Run Tests
-
-```bash
-php artisan test
-```
-
----
-
-## ✅ Deployment Guide (Optional)
-
-- Deploy to Heroku, DigitalOcean, or VPS
-- Setup MySQL and Redis
-- Configure `.env` file
-- Run migrations & caching
-
----
-
-## 🎉 Project Successfully Setup!
 
