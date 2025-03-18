@@ -19,28 +19,66 @@ class DatabaseSeeder extends Seeder
         // Create 1 Admin User
         User::create([
             'name' => 'Admin User',
-            'email' => 'admin@example.com',
+            'email' => 'admin@gmail.com',
             'password' => Hash::make('password'),
             'role' => 'admin',
         ]);
 
         // Create 2 Author Users
-        User::factory()->count(2)->create(['role' => 'author']);
+        User::create([
+            'name' => 'Author One',
+            'email' => 'author1@gmail.com',
+            'password' => Hash::make('password'),
+            'role' => 'author',
+        ]);
+
+        User::create([
+            'name' => 'Author Two',
+            'email' => 'author2@gmail.com',
+            'password' => Hash::make('password'),
+            'role' => 'author',
+        ]);
 
         // Create 5 Categories
-        $categories = Category::factory()->count(5)->create();
+            $categories = [];
+            for ($i = 1; $i <= 5; $i++) {
+                $name = 'Category ' . $i;
+                $categories[] = Category::create([
+                    'name' => $name,
+                    'slug' => strtolower(str_replace(' ', '-', $name)), // Generate slug
+                ]);
+            }
+
 
         // Create 10 Posts and attach them to random categories
-        $posts = Post::factory()->count(10)->create();
+        $posts = [];
+        foreach (range(1, 10) as $i) {
+            $title = 'Post Title ' . $i;
+            $posts[] = Post::create([
+                'title' => $title,
+                'slug' => strtolower(str_replace(' ', '-', $title)), // Generate slug
+                'content' => 'This is the content of post ' . $i,
+                'category_id' => $categories[array_rand($categories)]->id,
+                'user_id' => rand(1, 3),
+            ]);
+        }
+
 
         // Create 15 Tags
-        $tags = Tag::factory()->count(15)->create();
+            $tags = [];
+            for ($i = 1; $i <= 15; $i++) {
+                $tagName = 'Tag ' . $i;
+                $tags[] = Tag::create([
+                    'name' => $tagName,
+                    'slug' => strtolower(str_replace(' ', '-', $tagName)), // Generate slug
+                ]);
+            }
 
         // Attach tags to posts
-        $posts->each(function ($post) use ($tags) {
+        foreach ($posts as $post) {
             $post->tags()->attach(
-                $tags->random(rand(1, 5))->pluck('id')->toArray()
+                collect($tags)->random(rand(1, 5))->pluck('id')->toArray()
             );
-        });
+        }
     }
 }
