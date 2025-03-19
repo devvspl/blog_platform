@@ -40,14 +40,14 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Create 5 Categories
-            $categories = [];
-            for ($i = 1; $i <= 5; $i++) {
-                $name = 'Category ' . $i;
-                $categories[] = Category::create([
-                    'name' => $name,
-                    'slug' => strtolower(str_replace(' ', '-', $name)), // Generate slug
-                ]);
-            }
+        $categories = [];
+        for ($i = 1; $i <= 5; $i++) {
+            $name = 'Category ' . $i;
+            $categories[] = Category::create([
+                'name' => $name,
+                'slug' => strtolower(str_replace(' ', '-', $name)), // Generate slug
+            ]);
+        }
 
 
         // Create 10 Posts and attach them to random categories
@@ -65,14 +65,14 @@ class DatabaseSeeder extends Seeder
 
 
         // Create 15 Tags
-            $tags = [];
-            for ($i = 1; $i <= 15; $i++) {
-                $tagName = 'Tag ' . $i;
-                $tags[] = Tag::create([
-                    'name' => $tagName,
-                    'slug' => strtolower(str_replace(' ', '-', $tagName)), // Generate slug
-                ]);
-            }
+        $tags = [];
+        for ($i = 1; $i <= 15; $i++) {
+            $tagName = 'Tag ' . $i;
+            $tags[] = Tag::create([
+                'name' => $tagName,
+                'slug' => strtolower(str_replace(' ', '-', $tagName)), // Generate slug
+            ]);
+        }
 
         // Attach tags to posts
         foreach ($posts as $post) {
