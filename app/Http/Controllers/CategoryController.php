@@ -7,6 +7,7 @@ use App\Helpers\ResponseHelper;
 use App\Http\Requests\CategoryRequest;
 use App\Http\Requests\CategoryListRequest;
 use Illuminate\Support\Str;
+use App\Helpers\CacheHelper;
 
 class CategoryController extends Controller
 {
@@ -14,9 +15,12 @@ class CategoryController extends Controller
     public function index(CategoryListRequest $request)
     {
         try {
-            $categories = cache()->remember('categories_list', now()->addMinutes(10), function () {
-                return Category::all();
-            });
+            $categories = CacheHelper::get('categories_list');
+
+            if (!$categories) {
+                $categories = Category::all();
+                CacheHelper::put('categories_list', $categories, 10);
+            }
 
             return ResponseHelper::success($categories, 'Category list fetched successfully');
         } catch (\Exception $e) {
@@ -32,6 +36,8 @@ class CategoryController extends Controller
                 'name' => $request->name,
                 'slug' => Str::slug($request->name),
             ]);
+            CacheHelper::clear('categories_list');
+
             return ResponseHelper::success($category, 'Category created successfully', 201);
         } catch (\Exception $e) {
             return ResponseHelper::error('Something went wrong while creating the category', 500);
