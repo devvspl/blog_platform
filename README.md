@@ -1,33 +1,31 @@
-# Laravel 12 Blog Platform API
+# Laravel 12 Blog Platform – Setup Guide  
 
-## 📌 Project Setup Guide
+## Prerequisites  
+
+Before starting, ensure you have the following installed:  
+
+- PHP >= 8.1  
+- Composer  
+- MySQL  
+- Node.js & NPM  
+- Laravel 12  
 
 ---
 
-## 🛠️ Prerequisites
+## Step 1: Clone the Project  
 
-- PHP >= 8.1
-- Composer
-- MySQL Database
-- Laravel 12 Installed
-
----
-
-## 🛑 Step 1: Clone the Project
+Clone the repository and navigate into the project folder:  
 
 ```bash
 git clone https://github.com/devvspl/blog_platform.git
-```
-
-Navigate to the project folder:
-
-```bash
 cd blog_platform
 ```
 
 ---
 
-## ✅ Step 2: Install Dependencies
+## Step 2: Install Dependencies  
+
+Install PHP dependencies using Composer:  
 
 ```bash
 composer install
@@ -35,15 +33,15 @@ composer install
 
 ---
 
-## 🛠️ Step 3: Setup Environment File
+## Step 3: Setup Environment  
 
-Copy `.env.example` to `.env`
+Copy the example environment file:  
 
 ```bash
 cp .env.example .env
 ```
 
-Update the `.env` file with your database credentials:
+Update the `.env` file with database credentials:  
 
 ```env
 DB_CONNECTION=mysql
@@ -54,7 +52,7 @@ DB_USERNAME=root
 DB_PASSWORD=root
 ```
 
-Set the cache driver to database:
+Set the cache driver to use the database:  
 
 ```env
 CACHE_DRIVER=database
@@ -62,7 +60,7 @@ CACHE_DRIVER=database
 
 ---
 
-## 📂 Step 4: Generate Application Key
+## Step 4: Generate Application Key  
 
 ```bash
 php artisan key:generate
@@ -70,13 +68,15 @@ php artisan key:generate
 
 ---
 
-## 🛑 Step 5: Run Migrations
+## Step 5: Run Migrations  
+
+Run database migrations:  
 
 ```bash
 php artisan migrate
 ```
 
-Create the `cache` table for caching:
+Create the `cache` table and migrate it:  
 
 ```bash
 php artisan cache:table
@@ -85,7 +85,7 @@ php artisan migrate
 
 ---
 
-## 🚀 Step 6: Seed Database
+## Step 6: Seed the Database  
 
 ```bash
 php artisan db:seed
@@ -93,25 +93,20 @@ php artisan db:seed
 
 ---
 
-## 🔑 Step 7: Install Laravel Sanctum
+## Step 7: Install Laravel Sanctum  
 
 ```bash
 composer require laravel/sanctum
 ```
 
-Publish Sanctum config:
+Publish the Sanctum configuration file:  
 
 ```bash
 php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
-```
-
-Migrate Sanctum tables:
-
-```bash
 php artisan migrate
 ```
 
-Add Sanctum Middleware in `app/Http/Kernel.php`:
+Add Sanctum middleware in `app/Http/Kernel.php`:  
 
 ```php
 'api' => [
@@ -123,7 +118,45 @@ Add Sanctum Middleware in `app/Http/Kernel.php`:
 
 ---
 
-## ✅ Step 9: Run Laravel Server
+## Step 8: Install and Build Frontend Dependencies  
+
+Install Node.js dependencies:  
+
+```bash
+npm install
+```
+
+Build assets for production:  
+
+```bash
+npm run build
+```
+
+For development mode:  
+
+```bash
+npm run dev
+```
+
+---
+
+## Step 9: Install and Configure Livewire & Flux  
+
+Livewire and Flux are used for real-time UI updates. Install them with:  
+
+```bash
+composer require livewire/livewire
+composer require livewire/flux
+```
+
+Publish the Livewire configuration file:  
+
+```bash
+php artisan livewire:publish
+```
+---
+
+## Step 10: Run Laravel Server  
 
 ```bash
 php artisan serve
@@ -131,226 +164,18 @@ php artisan serve
 
 ---
 
-## 🌐 API Endpoints Documentation
+## API Documentation  
 
-### 🔐 Authentication Endpoints
+For API details, refer to the Postman documentation:  
 
-#### 1️⃣ Register New User
-- **Method:** POST
-- **Endpoint:** `/api/register`
-- **Description:** Register a new user with name, email, and password.
-- **Request Body:**
-```json
-{
-  "name": "dev",
-  "email": "dev@example.com",
-  "password": "password123",
-  "password_confirmation": "password123"
-}
-```
-- **Response:**
-```json
-{
-  "status": true,
-  "message": "User registered successfully",
-  "data": {
-    "user": {},
-    "token": "<API_TOKEN>"
-  }
-}
-```
-
-#### 2️⃣ Login User
-- **Method:** POST
-- **Endpoint:** `/api/login`
-- **Description:** Authenticate user with email and password.
-- **Request Body:**
-```json
-{
-  "email": "dev@example.com",
-  "password": "password123"
-}
-```
-- **Response:**
-```json
-{
-  "status": true,
-  "message": "Login successful",
-  "data": {
-    "user": {},
-    "token": "<API_TOKEN>"
-  }
-}
-```
-
-#### 3️⃣ Logout User
-- **Method:** POST
-- **Endpoint:** `/api/logout`
-- **Description:** Logout the authenticated user and revoke the token.
-- **Response:**
-```json
-{
-  "status": true,
-  "message": "Logout successful"
-}
-```
+[Postman API Documentation](https://documenter.getpostman.com/view/36783049/2sAYkBt26x)  
 
 ---
 
-### 📝 Post Endpoints
-
-#### 4️⃣ Fetch All Posts
-- **Method:** GET
-- **Endpoint:** `/api/posts`
-- **Description:** Retrieve all posts with pagination.
-- **Response:**
-```json
-{
-  "status": true,
-  "message": "Posts fetched successfully",
-  "data": []
-}
-```
-
-#### 5️⃣ Create New Post
-- **Method:** POST
-- **Endpoint:** `/api/posts`
-- **Description:** Create a new post with title, content, category, and tags.
-- **Request Body:**
-```json
-{
-  "title": "My First Post",
-  "content": "This is the content of my first post",
-  "category_id": 1,
-  "tags": [1, 2, 3]
-}
-```
-- **Response:**
-```json
-{
-  "status": true,
-  "message": "Post created successfully",
-  "data": {}
-}
-```
-
-#### 6️⃣ Get Single Post
-- **Method:** GET
-- **Endpoint:** `/api/posts/{slug}`
-- **Description:** Fetch a specific post by slug.
-- **Response:**
-```json
-{
-  "status": true,
-  "message": "Post fetched successfully",
-  "data": {}
-}
-```
-
-#### 7️⃣ Update Post
-- **Method:** PUT
-- **Endpoint:** `/api/posts/{slug}`
-- **Description:** Update a post's title, content, category, and tags.
-- **Request Body:**
-```json
-{
-  "title": "Updated Post Title",
-  "content": "Updated content",
-  "category_id": 2,
-  "tags": [2, 4]
-}
-```
-- **Response:**
-```json
-{
-  "status": true,
-  "message": "Post updated successfully",
-  "data": {}
-}
-```
-
-#### 8️⃣ Delete Post
-- **Method:** DELETE
-- **Endpoint:** `/api/posts/{slug}`
-- **Description:** Delete a post by slug.
-- **Response:**
-```json
-{
-  "status": true,
-  "message": "Post deleted successfully"
-}
-```
-
----
-
-### 📂 Category Endpoints
-
-#### 9️⃣ Get All Categories
-- **Method:** GET
-- **Endpoint:** `/api/categories`
-- **Description:** Fetch all categories.
-- **Response:**
-```json
-{
-  "status": true,
-  "message": "Category list fetched successfully",
-  "data": []
-}
-```
-
----
-
-### 🔍 Search Endpoint
-
-#### 🔎 Search Posts
-- **Method:** GET
-- **Endpoint:** `/api/search`
-- **Description:** Search posts by keyword, category, or tag.
-- **Query Parameters:**
-```json
-{
-  "keyword": "My First Post",
-  "category": "technology",
-  "tag": "laravel"
-}
-```
-- **Response:**
-```json
-{
-  "status": true,
-  "message": "Posts filtered successfully",
-  "data": []
-}
-```
-🔗 **Refer Postman API Documentation:** [Click Here](https://documenter.getpostman.com/view/36783049/2sAYkBt26x)
----
-
-
-## 🛑 Caching Implementation
-
-### ✅ For Posts Endpoint (10 Min Cache TTL)
-
-```php
-$posts = cache()->remember('posts_page_' . request('page', 1), now()->addMinutes(10), function () {
-    return Post::with(['category', 'tags', 'user'])->where('status', 'published')->paginate(10);
-});
-```
-
-### ✅ For Category Endpoint (10 Min Cache TTL)
-
-```php
-$categories = cache()->remember('categories_list', now()->addMinutes(10), function () {
-    return Category::all();
-});
-```
-
----
-
-## 🎯 Clear Cache Manually
+## Clearing Cache  
 
 ```bash
 php artisan cache:clear
 ```
 
 ---
-
